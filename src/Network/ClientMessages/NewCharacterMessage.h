@@ -1,0 +1,71 @@
+#pragma once
+#include <cstdint>
+#include <string>
+#include "BaseClientMessage.h"
+
+struct NewCharacterMessage : BaseClientMessage
+{
+	char SureName[60];
+	char FamilyName[60];
+
+	int8_t PeopleKind;
+	int8_t BodyLength;
+	int8_t BodyWidth;
+	int8_t ArmLength;
+	int8_t ArmWidth;
+	int8_t LegLength;
+	int8_t LegWidth;
+	int8_t ChestSize;
+	int8_t ChestSeparation;
+	int8_t ChestWidth;
+	int8_t TorsoLength;
+	int8_t MidWidth;
+	int8_t HeadShape;
+	int8_t HeadWidth;
+	int8_t HairStyle;
+	int8_t FacialHair;
+	int8_t Stubble;
+	int8_t MouthBottomSize;
+	int8_t CheekSnarl;
+	int8_t CheekBone;
+	int8_t EyesType;
+	int8_t EyeHeight;
+	int8_t EyeSeperation;
+	int8_t EyeRotation;
+	int8_t EyeSize;
+	int8_t EyeLid;
+	int8_t BrowInnerHeight;
+	int8_t BrowInnerScale;
+	int8_t BrowOuterHeight;
+	int8_t BrowOuterScale;
+	int8_t EarHeight;
+	int8_t EarSeperation;
+	int8_t EarRotation;
+	int8_t EarSize;
+	int8_t FaceComplexion;
+	int8_t FaceDetails;
+	int8_t FaceExtraDetails;
+	int8_t FaceWrinkles;
+	int8_t NoseBridgeHeight;
+	int8_t NoseBridgeSize;
+	int8_t NosePosition;
+	int8_t NoseTipHeight;
+	int8_t NoseTipSize;
+	int8_t NosetrilHeight;
+	int8_t NosetrilSize;
+	int8_t JawHeight;
+	int8_t JawSize;
+	int8_t ChinHeight;
+	int8_t ChinWidth;
+	int8_t ChinDepth;
+	int8_t MouthType;
+	int8_t MouthPosition;
+	int8_t MouthSize;
+	int8_t MouthTopSize;
+	int8_t MouthCornerHeight;
+	int8_t MouthBottomScale;
+	int32_t SkinColor;
+	int32_t HairColor;
+	int32_t EyeColor;
+	int32_t LipsColor;
+};
