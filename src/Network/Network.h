@@ -3,5 +3,5 @@
 class Network
 {
 public:
-	void Dispatch(BaseClientMessage& msg);
+    void Dispatch(BaseClientMessage& msg);
 };
