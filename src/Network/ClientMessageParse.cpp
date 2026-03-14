@@ -19,7 +19,7 @@ ClientMessageParse::~ClientMessageParse()
     delete this->marshaller;
 }
 
-bool ClientMessageParse::ParseMessage(std::istream& msg)
+bool ClientMessageParse::ParseMessage(int receiverID, std::istream& msg)
 {
     auto messageType = this->marshaller->ReadU8(msg);
     
@@ -36,7 +36,7 @@ bool ClientMessageParse::ParseMessage(std::istream& msg)
         {
             return false;
         }
-        this->network->Dispatch(aMsg);
+        this->network->Dispatch(receiverID, aMsg);
         break;
     }
     case ClientMessageType::SelectCharacter:
@@ -48,7 +48,7 @@ bool ClientMessageParse::ParseMessage(std::istream& msg)
             return false;
         }
         scMsg.Character = characterId.value();
-        this->network->Dispatch(scMsg);
+        this->network->Dispatch(receiverID, scMsg);
         break;
     }
     case ClientMessageType::ChangeName:
@@ -62,7 +62,7 @@ bool ClientMessageParse::ParseMessage(std::istream& msg)
         {
             return false;
         }
-        this->network->Dispatch(ncMsg);
+        this->network->Dispatch(receiverID, ncMsg);
         break;
     }
     case ClientMessageType::ChangeAppearance:
@@ -546,8 +546,7 @@ bool ClientMessageParse::ParseMessage(std::istream& msg)
         {
             return false;
         }
-        this->network->Dispatch(ncMsg);
-
+        this->network->Dispatch(receiverID, ncMsg);
         break;
     }
     case ClientMessageType::CharacterMove:
@@ -601,7 +600,7 @@ bool ClientMessageParse::ParseMessage(std::istream& msg)
         {
             return false;
         }
-        this->network->Dispatch(cmMsg);
+        this->network->Dispatch(receiverID, cmMsg);
         break;
     }
     default:
