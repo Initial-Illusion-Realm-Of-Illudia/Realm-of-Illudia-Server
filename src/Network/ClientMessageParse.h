@@ -12,5 +12,5 @@ private:
 public:
     ClientMessageParse(Network* innetwork);
     ~ClientMessageParse();
-    void ParseMessage(std::istream& msg);
+    bool ParseMessage(int receiverID, std::istream& msg);
 };

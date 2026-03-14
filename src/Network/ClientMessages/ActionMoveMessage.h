@@ -13,6 +13,7 @@
 struct ActionMoveMessage : BaseClientMessage
 {
     ClientMessageType MessageType = ClientMessageType::CharacterMove;
+    int16_t SerialNumber;
     int16_t MoveKind; /** < See Game/Movement/MovementFlags.h, some is server only */
     double OldX; /** < Old position of the character, for reference */
     double OldY;

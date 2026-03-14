@@ -1,3 +1,4 @@
+#pragma once
 /**
  * @brief Server message types
  */
@@ -5,7 +6,7 @@ enum class ServerMessageType
 {
     SelectionCharacterList = 10,
     CharacterDiscover = 30,
-    CharacterName = 31,
+    CharacterRegion = 31,
     CharacterMove = 60
 };
 

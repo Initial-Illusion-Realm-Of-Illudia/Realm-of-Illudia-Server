@@ -7,10 +7,10 @@
 class Marshaller
 {
 public:
-	std::optional<uint8_t> ReadU8(std::istream& msg);
-	std::optional<uint16_t> ReadU16(std::istream& msg);
-	std::optional<uint32_t> ReadU32(std::istream& msg);
-	std::optional<uint64_t> ReadU64(std::istream& msg);
+    std::optional<uint8_t> ReadU8(std::istream& msg);
+    std::optional<uint16_t> ReadU16(std::istream& msg);
+    std::optional<uint32_t> ReadU32(std::istream& msg);
+    std::optional<uint64_t> ReadU64(std::istream& msg);
     std::optional<float_t> ReadFloat(std::istream& msg);
     std::optional<double_t> ReadDouble(std::istream& msg);
     std::optional<std::string> ReadString(std::istream& msg);

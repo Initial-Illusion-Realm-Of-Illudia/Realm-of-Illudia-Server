@@ -16,16 +16,16 @@ ClientMessageParse::ClientMessageParse(Network* innetwork)
 
 ClientMessageParse::~ClientMessageParse()
 {
-    delete(this->marshaller);
+    delete this->marshaller;
 }
 
-void ClientMessageParse::ParseMessage(std::istream& msg)
+bool ClientMessageParse::ParseMessage(std::istream& msg)
 {
     auto messageType = this->marshaller->ReadU8(msg);
     
     if (!messageType.has_value())
     {
-        return;
+        return false;
     }
     switch (static_cast<ClientMessageType>(messageType.value()))
     {
@@ -34,7 +34,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         AuthenticateMessage aMsg = AuthenticateMessage();
         if (!this->marshaller->ReadCharArray(msg, aMsg.Token, 64))
         {
-            return;
+            return false;
         }
         this->network->Dispatch(aMsg);
         break;
@@ -45,7 +45,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         auto characterId = this->marshaller->ReadU8(msg);
         if (!characterId.has_value())
         {
-            return;
+            return false;
         }
         scMsg.Character = characterId.value();
         this->network->Dispatch(scMsg);
@@ -56,11 +56,11 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         ChangeNameMessage ncMsg = ChangeNameMessage();
         if (!this->marshaller->ReadCharArray(msg, ncMsg.SureName, 60))
         {
-            return;
+            return false;
         }
         if (!this->marshaller->ReadCharArray(msg, ncMsg.FamilyName, 60))
         {
-            return;
+            return false;
         }
         this->network->Dispatch(ncMsg);
         break;
@@ -71,7 +71,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         auto peopleKind = this->marshaller->ReadU8(msg);
         if (!peopleKind.has_value())
         {
-            return;
+            return false;
         }
         ncMsg.PeopleKind = peopleKind.value();
         if (auto bodyLength = this->marshaller->ReadU8(msg))
@@ -80,7 +80,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto bodyWidth = this->marshaller->ReadU8(msg))
         {
@@ -88,7 +88,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto armLength = this->marshaller->ReadU8(msg))
         {
@@ -96,7 +96,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto armWidth = this->marshaller->ReadU8(msg))
         {
@@ -104,7 +104,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto legLength = this->marshaller->ReadU8(msg))
         {
@@ -112,7 +112,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto legWidth = this->marshaller->ReadU8(msg))
         {
@@ -120,7 +120,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto chestSize = this->marshaller->ReadU8(msg))
         {
@@ -128,7 +128,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto chestSeparation = this->marshaller->ReadU8(msg))
         {
@@ -136,7 +136,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto chestWidth = this->marshaller->ReadU8(msg))
         {
@@ -144,7 +144,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto torsoLength = this->marshaller->ReadU8(msg))
         {
@@ -152,7 +152,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto midWidth = this->marshaller->ReadU8(msg))
         {
@@ -160,7 +160,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto headShape = this->marshaller->ReadU8(msg))
         {
@@ -168,7 +168,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto headWidth = this->marshaller->ReadU8(msg))
         {
@@ -176,7 +176,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto hairStyle = this->marshaller->ReadU8(msg))
         {
@@ -184,7 +184,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto facialHair = this->marshaller->ReadU8(msg))
         {
@@ -192,7 +192,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto stubble = this->marshaller->ReadU8(msg))
         {
@@ -200,7 +200,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthBottomSize = this->marshaller->ReadU8(msg))
         {
@@ -208,7 +208,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto cheekSnarl = this->marshaller->ReadU8(msg))
         {
@@ -216,7 +216,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto cheekBone = this->marshaller->ReadU8(msg))
         {
@@ -224,7 +224,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyesType = this->marshaller->ReadU8(msg))
         {
@@ -232,7 +232,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyeHeight = this->marshaller->ReadU8(msg))
         {
@@ -240,7 +240,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyeSeperation = this->marshaller->ReadU8(msg))
         {
@@ -248,7 +248,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyeRotation = this->marshaller->ReadU8(msg))
         {
@@ -256,7 +256,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyeSize = this->marshaller->ReadU8(msg))
         {
@@ -264,7 +264,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyeLid = this->marshaller->ReadU8(msg))
         {
@@ -272,7 +272,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto browInnerHeight = this->marshaller->ReadU8(msg))
         {
@@ -280,7 +280,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto browInnerScale = this->marshaller->ReadU8(msg))
         {
@@ -288,7 +288,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto browOuterHeight = this->marshaller->ReadU8(msg))
         {
@@ -296,7 +296,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto browOuterScale = this->marshaller->ReadU8(msg))
         {
@@ -304,7 +304,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto earHeight = this->marshaller->ReadU8(msg))
         {
@@ -312,7 +312,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto earSeperation = this->marshaller->ReadU8(msg))
         {
@@ -320,7 +320,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto earRotation = this->marshaller->ReadU8(msg))
         {
@@ -328,7 +328,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto earSize = this->marshaller->ReadU8(msg))
         {
@@ -336,7 +336,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto faceComplexion = this->marshaller->ReadU8(msg))
         {
@@ -344,7 +344,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto faceDetails = this->marshaller->ReadU8(msg))
         {
@@ -352,7 +352,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto faceExtraDetails = this->marshaller->ReadU8(msg))
         {
@@ -360,7 +360,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto faceWrinkles = this->marshaller->ReadU8(msg))
         {
@@ -368,7 +368,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto noseBridgeHeight = this->marshaller->ReadU8(msg))
         {
@@ -376,7 +376,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto noseBridgeSize = this->marshaller->ReadU8(msg))
         {
@@ -384,7 +384,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto nosePosition = this->marshaller->ReadU8(msg))
         {
@@ -392,7 +392,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto noseTipHeight = this->marshaller->ReadU8(msg))
         {
@@ -400,7 +400,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto noseTipSize = this->marshaller->ReadU8(msg))
         {
@@ -408,7 +408,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto nosetrilHeight = this->marshaller->ReadU8(msg))
         {
@@ -416,7 +416,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto nosetrilSize = this->marshaller->ReadU8(msg))
         {
@@ -424,7 +424,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto jawHeight = this->marshaller->ReadU8(msg))
         {
@@ -432,7 +432,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto jawSize = this->marshaller->ReadU8(msg))
         {
@@ -440,7 +440,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto chinHeight = this->marshaller->ReadU8(msg))
         {
@@ -448,7 +448,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto chinWidth = this->marshaller->ReadU8(msg))
         {
@@ -456,7 +456,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto chinDepth = this->marshaller->ReadU8(msg))
         {
@@ -464,7 +464,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthType = this->marshaller->ReadU8(msg))
         {
@@ -472,7 +472,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthPosition = this->marshaller->ReadU8(msg))
         {
@@ -480,7 +480,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthSize = this->marshaller->ReadU8(msg))
         {
@@ -488,7 +488,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthTopSize = this->marshaller->ReadU8(msg))
         {
@@ -496,7 +496,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthCornerHeight = this->marshaller->ReadU8(msg))
         {
@@ -504,7 +504,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto mouthBottomScale = this->marshaller->ReadU8(msg))
         {
@@ -512,7 +512,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto skinColor = this->marshaller->ReadU8(msg))
         {
@@ -520,7 +520,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto hairColor = this->marshaller->ReadU8(msg))
         {
@@ -528,7 +528,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto eyeColor = this->marshaller->ReadU8(msg))
         {
@@ -536,7 +536,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto lipsColor = this->marshaller->ReadU8(msg))
         {
@@ -544,7 +544,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         this->network->Dispatch(ncMsg);
 
@@ -559,7 +559,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto y = this->marshaller->ReadFloat(msg))
         {
@@ -567,7 +567,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto z = this->marshaller->ReadFloat(msg))
         {
@@ -575,7 +575,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto facing = this->marshaller->ReadFloat(msg))
         {
@@ -583,7 +583,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto headpitch = this->marshaller->ReadFloat(msg))
         {
@@ -591,7 +591,7 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
         if (auto headyaw = this->marshaller->ReadFloat(msg))
         {
@@ -599,14 +599,16 @@ void ClientMessageParse::ParseMessage(std::istream& msg)
         }
         else
         {
-            return;
+            return false;
         }
-        
+        this->network->Dispatch(cmMsg);
         break;
     }
     default:
         break;
     }
+
+    return true;
 }
 
 
