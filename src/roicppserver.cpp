@@ -1,12 +1,8 @@
-﻿// roicppserver.cpp : Defines the entry point for the application.
-//
-
-#include "roicppserver.h"
-
-using namespace std;
+﻿#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
 
 int main()
 {
-	cout << "Hello CMake." << endl;
 	return 0;
 }

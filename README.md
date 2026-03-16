@@ -1,4 +1,4 @@
-#Initial Illusion: Realm of Illudia Server
+# Initial Illusion: Realm of Illudia Server
 
 This is the server for the MMORPG Initial Illusion: Realm of Illudia.
 

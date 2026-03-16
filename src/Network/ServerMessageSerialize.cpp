@@ -52,7 +52,7 @@ bool ServerMessageSerialize::SerializeMessage(
         {
             return false;
         }
-        this->network->Send(cmMsg);
+        this->network->Send(receiverID, cmMsg);
         break;
     }
     case ServerMessageType::CharacterDiscover:
@@ -82,7 +82,7 @@ bool ServerMessageSerialize::SerializeMessage(
         {
             return false;
         }
-        this->network->Send(cdMsg);
+        this->network->Send(receiverID, cdMsg);
         break;
     }
     case ServerMessageType::CharacterRegion:
@@ -102,17 +102,21 @@ bool ServerMessageSerialize::SerializeMessage(
     case ServerMessageType::SelectionCharacterList:
     {
         SelectionCharacterListMessage& scMsg = (SelectionCharacterListMessage&)msg;
-        if (!this->marshaller->WriteU64(stream, scMsg.CharacterID))
-        {
-            return false;
-        }
         if (!this->marshaller->WriteU32(stream, scMsg.CharacterCount))
         {
             return false;
         }
         for (int i = 0; i < scMsg.CharacterCount; i++)
         {
-            if (!this->marshaller->WriteU64(stream, scMsg.CharacterIDs[i]))
+            if (!this->marshaller->WriteU64(stream, scMsg.Characters[i].CharacterId))
+            {
+                return false;
+            }
+            if (!this->marshaller->WriteCharArray(stream, scMsg.Characters[i].SurName, 60))
+            {
+                return false;
+            }
+            if (!this->marshaller->WriteCharArray(stream, scMsg.Characters[i].FirstName, 60))
             {
                 return false;
             }
